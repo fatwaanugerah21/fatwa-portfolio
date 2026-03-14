@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --gradient-gold: linear-gradient(135deg, #C8A96E 0%, #E8C98A 50%, #C8A96E 100%);
+  }
+
+  * { @apply border-navy-100 dark:border-navy-800; }
+
+  html { scroll-behavior: smooth; }
+
+  ::selection {
+    background: rgba(200, 169, 110, 0.25);
+    color: inherit;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-navy-200 dark:bg-navy-700 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-accent; }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: var(--gradient-gold);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-animate {
+    background: var(--gradient-gold);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .glass {
+    @apply backdrop-blur-sm bg-white/70 dark:bg-navy-900/70 border border-white/20 dark:border-navy-700/50;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-navy-900/10 dark:hover:shadow-black/30;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+}

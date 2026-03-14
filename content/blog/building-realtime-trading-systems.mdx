@@ -1,0 +1,89 @@
+---
+title: "Building Real-Time Trading Systems with WebSocket and Node.js"
+excerpt: "A deep dive into architecting high-throughput, low-latency trading infrastructure — lessons from building 15+ production bots."
+date: "2024-11-15"
+tags: ["WebSocket", "Node.js", "TypeScript", "Architecture"]
+featured: true
+---
+
+## Introduction
+
+After building and maintaining 15+ automated trading bots in production — processing hundreds of orders per month — I want to share the key architectural decisions that made the difference between a fragile prototype and a reliable production system.
+
+## The Core Challenge
+
+Real-time trading systems have unforgiving requirements:
+
+- **Latency**: Every millisecond matters. A slow system misses opportunities.
+- **Reliability**: Downtime = missed trades = financial impact.
+- **Concurrency**: You need to handle multiple data streams and order executions simultaneously.
+
+## WebSocket Architecture
+
+The foundation of any real-time trading system is a solid WebSocket connection manager.
+
+```typescript
+class ConnectionManager {
+  private ws: WebSocket | null = null;
+  private reconnectDelay = 1000;
+  private maxReconnectDelay = 30000;
+
+  connect(url: string) {
+    this.ws = new WebSocket(url);
+    this.ws.on('open', () => {
+      this.reconnectDelay = 1000; // reset on success
+      this.onConnected();
+    });
+    this.ws.on('close', () => this.scheduleReconnect());
+    this.ws.on('error', (err) => this.handleError(err));
+  }
+
+  private scheduleReconnect() {
+    setTimeout(() => {
+      this.reconnectDelay = Math.min(
+        this.reconnectDelay * 2,
+        this.maxReconnectDelay
+      );
+      this.connect(this.url);
+    }, this.reconnectDelay);
+  }
+}
+```
+
+The exponential backoff is critical — without it, you'll hammer the server with reconnection attempts during an outage.
+
+## Order Execution Pipeline
+
+```typescript
+interface OrderJob {
+  id: string;
+  symbol: string;
+  side: 'buy' | 'sell';
+  quantity: number;
+  price?: number;
+  priority: number;
+}
+
+class OrderQueue {
+  private queue: PriorityQueue<OrderJob>;
+
+  async process(job: OrderJob): Promise<void> {
+    const result = await this.execute(job);
+    await this.persistResult(result);
+    this.emit('order:filled', result);
+  }
+}
+```
+
+## Key Lessons
+
+1. **Always implement circuit breakers** — if the exchange API starts failing, stop sending orders immediately.
+2. **Persist every state change** — you need to reconstruct system state after a crash.
+3. **Monitor latency percentiles, not averages** — p99 latency is what kills you in production.
+4. **Test with real market data** — paper trading with historical data is not enough.
+
+## Conclusion
+
+Building reliable trading systems is fundamentally an exercise in distributed systems design. The trading domain just adds time pressure.
+
+The patterns described here have served our fleet of 15+ bots through volatile market conditions. Start with a solid foundation — connection resilience, state persistence, and monitoring — and the trading logic becomes almost secondary.
