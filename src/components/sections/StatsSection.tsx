@@ -24,7 +24,7 @@ function CountUp({ target, suffix = "" }: { target: string; suffix?: string }) {
 
   return (
     <span ref={ref}>
-      {count}
+      {count.toLocaleString()}
       {target.includes("+") ? "+" : ""}
       {suffix}
     </span>

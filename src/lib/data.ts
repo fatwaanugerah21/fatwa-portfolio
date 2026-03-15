@@ -114,7 +114,7 @@ export const EXPERIENCE = [
 
 export const STATS = [
   { label: "Years Experience", value: "5+" },
-  { label: "Users Served", value: "1M+" },
+  { label: "Users Served", value: "1000000+" },
   { label: "Trading Bots Built", value: "15+" },
   { label: "Engineers Mentored", value: "3" },
 ];
