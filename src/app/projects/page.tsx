@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getGitHubRepos, getGitHubStats } from "@/lib/github";
+import { getGitHubRepos, getGitHubStats, getContributions } from "@/lib/github";
 import { FEATURED_PROJECTS } from "@/lib/data";
 import { ProjectsClient } from "./ProjectsClient";
 
@@ -10,9 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ProjectsPage() {
-  const [githubRepos, githubStats] = await Promise.all([
+  const [githubRepos, githubStats, contributions] = await Promise.all([
     getGitHubRepos(),
     getGitHubStats(),
+    getContributions(),
   ]);
 
   return (
@@ -20,6 +21,7 @@ export default async function ProjectsPage() {
       featuredProjects={FEATURED_PROJECTS}
       githubRepos={githubRepos}
       githubStats={githubStats}
+      contributions={contributions}
     />
   );
 }

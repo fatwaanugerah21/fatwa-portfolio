@@ -79,7 +79,7 @@ export function HeroSection() {
               Get In Touch
             </Link>
             <a
-              href="/Fatwa_Anugerah_CV_Final.pdf"
+              href="/cv/Fatwa_Anugerah_CV_Final.pdf"
               download
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent/10 text-accent text-sm font-semibold hover:bg-accent/20 transition-colors"
             >

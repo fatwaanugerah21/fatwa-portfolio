@@ -14,7 +14,7 @@ export async function getGitHubRepos(): Promise<GitHubRepo[]> {
   try {
     const res = await fetch(
       `${GITHUB_API}/users/${USERNAME}/repos?sort=updated&per_page=100&type=public`,
-      { headers, next: { revalidate: 3600 } } // cache 1hr
+      { headers, next: { revalidate: 3600 } }
     );
     if (!res.ok) throw new Error("GitHub API error");
     const repos: GitHubRepo[] = await res.json();
@@ -49,9 +49,83 @@ export async function getGitHubStats(): Promise<GitHubStats> {
       totalRepos: user.public_repos || repos.length,
       totalStars,
       totalForks,
-      contributions: user.public_repos * 12, // approximation
+      contributions: user.public_repos * 12,
     };
   } catch {
     return { totalRepos: 0, totalStars: 0, totalForks: 0, contributions: 0 };
+  }
+}
+
+// ── Contribution types ────────────────────────────────────────────
+
+export type ContributionDay = {
+  date: string;
+  contributionCount: number;
+  color: string;
+};
+
+export type ContributionWeek = {
+  contributionDays: ContributionDay[];
+};
+
+export type ContributionData = {
+  totalContributions: number;
+  weeks: ContributionWeek[];
+};
+
+// ── GraphQL query ─────────────────────────────────────────────────
+
+const CONTRIBUTIONS_QUERY = `
+  query($username: String!) {
+    user(login: $username) {
+      contributionsCollection {
+        contributionCalendar {
+          totalContributions
+          weeks {
+            contributionDays {
+              date
+              contributionCount
+              color
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export async function getContributions(): Promise<ContributionData> {
+  // GraphQL requires an auth token — fall back to empty data gracefully
+  if (!process.env.GITHUB_TOKEN) {
+    console.warn("GITHUB_TOKEN not set — skipping contribution graph.");
+    return { totalContributions: 0, weeks: [] };
+  }
+
+  try {
+    const res = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+      },
+      body: JSON.stringify({
+        query: CONTRIBUTIONS_QUERY,
+        variables: { username: USERNAME },
+      }),
+      next: { revalidate: 3600 },
+    });
+
+    if (!res.ok) throw new Error(`GitHub GraphQL error: ${res.status}`);
+
+    const json = await res.json();
+
+    if (json.errors?.length) {
+      throw new Error(json.errors[0].message);
+    }
+
+    return json.data.user.contributionsCollection.contributionCalendar as ContributionData;
+  } catch (err) {
+    console.error("getContributions failed:", err);
+    return { totalContributions: 0, weeks: [] };
   }
 }

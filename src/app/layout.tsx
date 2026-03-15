@@ -64,6 +64,9 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
     types: { "application/rss+xml": `${SITE_URL}/blog/rss.xml` },
   },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

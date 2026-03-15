@@ -51,7 +51,7 @@ export function Footer() {
               ))}
               <li>
                 <a
-                  href="/Fatwa_Anugerah_CV_Final.pdf"
+                  href="/cv/Fatwa_Anugerah_CV_Final.pdf"
                   download
                   className="inline-flex items-center gap-1 text-sm text-navy-600 dark:text-slate-400 hover:text-accent dark:hover:text-accent transition-colors"
                 >

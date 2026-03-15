@@ -93,7 +93,7 @@ export function Navbar() {
 
             {/* Download CV */}
             <a
-              href="/Fatwa_Anugerah_CV_Final.pdf"
+              href="/cv/Fatwa_Anugerah_CV_Final.pdf"
               download
               className="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium bg-accent text-white rounded-lg hover:bg-amber-600 transition-colors"
             >
@@ -138,7 +138,7 @@ export function Navbar() {
                   </Link>
                 ))}
                 <a
-                  href="/Fatwa_Anugerah_CV_Final.pdf"
+                  href="/cv/Fatwa_Anugerah_CV_Final.pdf"
                   download
                   className="flex items-center gap-2 mx-4 mt-3 px-4 py-2.5 text-sm font-medium bg-accent text-white rounded-lg"
                 >

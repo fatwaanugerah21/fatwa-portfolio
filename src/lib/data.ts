@@ -14,16 +14,16 @@ export const FEATURED_PROJECTS: Project[] = [
     id: "trading-bots",
     title: "Automated Trading Bot Platform",
     description:
-      "Fleet of 15+ trading bots with real-time market data ingestion, order execution, and risk management. Processes hundreds of orders per month with hundreds of thousands in monthly volume.",
-    tech: ["TypeScript", "Go", "WebSocket", "Real Time", "PostgreSQL", "Docker", "Azure"],
+      "Fleet of 15+ automated trading bots performing real-time market data ingestion and automated order execution across multiple exchanges, processing $2M+ in monthly trading volume.",
+    tech: ["TypeScript", "Go", "WebSocket", "Node.js", "PostgreSQL", "Docker", "Azure"],
     featured: true,
   },
   {
-    id: "realtime-platform",
-    title: "Real-Time SaaS Platform",
+    id: "backtesting-platform",
+    title: "Backtesting Platform",
     description:
-      "Full-stack platform serving 100k+ users. WebSocket infrastructure supporting high concurrent connections with sub-100ms latency.",
-    tech: ["TypeScript", "Next.js", "WebSocket", "Redis", "Azure", "CI/CD"],
+      "High-performance backtesting engine leveraging Node.js worker_threads to parallelize strategy simulation across all available CPU cores, processing multi-year OHLCV candle data. Real-time WebSocket dashboard surfacing Sharpe ratio, max drawdown, and win rate.",
+    tech: ["Node.js", "worker_threads", "WebSocket", "React.js", "TypeScript"],
     featured: true,
   },
 ];
@@ -31,7 +31,7 @@ export const FEATURED_PROJECTS: Project[] = [
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
-    name: "Bobby Ho",
+    name: "Bobby Hulstroem",
     role: "CTO",
     company: "Avasosoft Technology",
     content:
@@ -76,7 +76,7 @@ export const SKILLS_BY_CATEGORY = [
 
 export const EXPERIENCE = [
   {
-    company: "Avasosoft Technology Solution",
+    company: "AVASO Technology Solutions",
     role: "Senior Software Engineer",
     period: "Sep 2022 – Feb 2026",
     location: "Remote",
@@ -103,7 +103,7 @@ export const EXPERIENCE = [
     company: "Emolyze.Tech",
     role: "Junior Full Stack Engineer",
     period: "Feb 2021 – Jan 2022",
-    location: "On-site",
+    location: "Remote",
     highlights: [
       "Built internal analytics dashboard from scratch for real-time KPI visibility",
       "Engineered REST API integration layer unifying third-party data sources",
@@ -114,7 +114,7 @@ export const EXPERIENCE = [
 
 export const STATS = [
   { label: "Years Experience", value: "5+" },
-  { label: "Users Served", value: "100k+" },
+  { label: "Users Served", value: "1M+" },
   { label: "Trading Bots Built", value: "15+" },
   { label: "Engineers Mentored", value: "3" },
 ];
